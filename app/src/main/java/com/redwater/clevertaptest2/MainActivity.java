@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void raiseTestEvent() {
         clevertapApi.pushEvent("TEST");
+        Toast.makeText(MainActivity.this, "Test event raised", Toast.LENGTH_SHORT).show();
     }
 
     private void raiseProductViewed() {

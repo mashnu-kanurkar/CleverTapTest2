@@ -1,7 +1,9 @@
 package com.redwater.clevertaptest2;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.clevertap.android.sdk.CleverTapAPI;
 
 import java.util.HashMap;
@@ -77,8 +83,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadLogo() {
+
+        imgLogo.setVisibility(View.VISIBLE);
         Glide.with(getApplicationContext())
                 .load("https://cdn.freelogovectors.net/wp-content/uploads/2021/06/clevertap-logo-freelogovectors.net_.png")
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        imgLogo.setVisibility(View.GONE);
+                        Toast.makeText(MainActivity.this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imgLogo.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
                 .into(imgLogo);
+
+
     }
 }
